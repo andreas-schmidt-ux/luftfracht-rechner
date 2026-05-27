@@ -102,29 +102,29 @@ function parseEmailText(text) {
       continue;
     }
 
-    // ── Step 1: try to strip explicit qty prefix like "2x " or "2 X " ─
+    // ── Step 1: tight 4-number format at start of line: 1x120x82x70 (no spaces) ─
     var qty = 1;
-    var dimLine = line;
-    var mQtyPrefix = line.match(/^(\d+)\s*[xX]\s+/); // requires whitespace after the x
-    if (mQtyPrefix) {
-      qty = parseInt(mQtyPrefix[1], 10);
-      dimLine = line.substring(mQtyPrefix[0].length);
+    var dimMatch = null;
+
+    var mTight = line.match(/^(\d+)[xX](\d+(?:\.\d+)?)[xX](\d+(?:\.\d+)?)[xX](\d+(?:\.\d+)?)/i);
+    if (mTight) {
+      qty = parseInt(mTight[1], 10);
+      dimMatch = [null, mTight[2], mTight[3], mTight[4]]; // fake match array
     }
 
-    // ── Step 2: tight format NxAxBxC (no space) only if no prefix found ─
-    var mTight = null;
-    if (!mQtyPrefix) {
-      mTight = line.match(/^(\d+)[xX](\d+(?:\.\d+)?)[xX](\d+(?:\.\d+)?)[xX](\d+(?:\.\d+)?)/i);
-      if (mTight) {
-        qty = parseInt(mTight[1], 10);
+    // ── Step 2: find 3 dims anywhere in line with reDim ──────────────────
+    if (!dimMatch) {
+      var m = reDim.exec(line);
+      if (!m) continue; // no dimensions found
+
+      // Check prefix (text BEFORE the 3-dim match) for a qty prefix
+      var prefix = line.substring(0, m.index);
+      var mQty = prefix.match(/(\d+)\s*[xX]\s*$/); // number+x at END of prefix
+      if (mQty) {
+        qty = parseInt(mQty[1], 10);
       }
+      dimMatch = m;
     }
-
-    // ── Step 3: find dimensions in dimLine (or use tight groups) ─────────
-    var dimMatch = mTight
-      ? [null, mTight[2], mTight[3], mTight[4]]
-      : dimLine.match(reDim);
-    if (!dimMatch) continue; // No dimensions -> skip
 
     var l = parseFloat(dimMatch[1]);
     var b = parseFloat(dimMatch[2]);
@@ -138,9 +138,10 @@ function parseEmailText(text) {
     } else {
       // bare kg - but make sure it's not one of the dimension numbers
       // by checking it appears after the dimension block in the original line
-      var dimStr = mTight ? mTight[0] : (mQtyPrefix ? mQtyPrefix[0] : '') + dimMatch[0];
-      var dimIndex = line.indexOf(dimStr);
-      var afterDim = line.substring(dimIndex + dimStr.length);
+      var dimEnd = mTight
+        ? mTight[0].length
+        : (dimMatch.index + dimMatch[0].length);
+      var afterDim = line.substring(dimEnd);
       var mWBare = afterDim.match(reWeightBare);
       if (mWBare) {
         weight = parseFloat(mWBare[1]);
