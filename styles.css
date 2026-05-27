@@ -1,0 +1,386 @@
+/* ============================================================
+   Luftfracht Rechner – Office Fluent-inspired styles
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --blue:        #0078d4;
+  --blue-light:  #deecf9;
+  --blue-dark:   #005a9e;
+  --bg:          #f3f2f1;
+  --white:       #ffffff;
+  --text:        #323130;
+  --text-muted:  #605e5c;
+  --border:      #edebe9;
+  --border-mid:  #c8c6c4;
+  --warning:     #d83b01;
+  --warning-bg:  #fff4ce;
+  --row-alt:     #faf9f8;
+  --radius:      4px;
+  --shadow:      0 1px 3px rgba(0,0,0,0.12);
+}
+
+html, body {
+  height: 100%;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+}
+
+#app {
+  max-width: 380px;
+  margin: 0 auto;
+  padding: 8px;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 4px 8px;
+}
+
+.app-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.app-header h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: -0.2px;
+}
+
+/* ── Cards ─────────────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+.table-card {
+  padding: 10px 10px 8px;
+}
+
+.results-card {
+  padding: 12px;
+}
+
+.action-card {
+  padding: 10px 12px;
+}
+
+/* ── Phase visibility ──────────────────────────────────────── */
+.phase { }
+.hidden { display: none !important; }
+
+/* ── Input phase ───────────────────────────────────────────── */
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  padding: 8px;
+  font-size: 12px;
+  font-family: "Cascadia Mono", "Consolas", monospace;
+  color: var(--text);
+  line-height: 1.5;
+  background: var(--white);
+  transition: border-color 0.15s;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue);
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: none;
+  border-radius: var(--radius);
+  padding: 7px 16px;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: var(--white);
+  border: 1px solid var(--blue);
+}
+
+.btn-primary:hover {
+  background: var(--blue-dark);
+  border-color: var(--blue-dark);
+}
+
+.btn-primary:active {
+  background: #004578;
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--blue);
+  border: 1px solid var(--blue);
+}
+
+.btn-secondary:hover {
+  background: var(--blue-light);
+}
+
+.btn-secondary:active {
+  background: #c7e0f4;
+}
+
+.btn-add {
+  background: transparent;
+  color: var(--blue);
+  border: 1px dashed var(--border-mid);
+  width: 100%;
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 6px;
+}
+
+.btn-add:hover {
+  background: var(--blue-light);
+  border-color: var(--blue);
+}
+
+/* ── Table ─────────────────────────────────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+thead {
+  background: var(--blue);
+  color: var(--white);
+}
+
+thead th {
+  padding: 6px 4px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+thead th:first-child { padding-left: 8px; }
+
+tbody tr:nth-child(odd) {
+  background: var(--white);
+}
+
+tbody tr:nth-child(even) {
+  background: var(--row-alt);
+}
+
+tbody tr:hover {
+  background: var(--blue-light);
+}
+
+tbody td {
+  padding: 3px 2px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+tbody td:first-child {
+  padding-left: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  min-width: 22px;
+}
+
+/* Column widths */
+.col-num    { width: 24px; }
+.col-qty    { width: 44px; }
+.col-dim    { width: 54px; }
+.col-weight { width: 60px; }
+.col-del    { width: 28px; }
+
+/* Number inputs in table */
+tbody td input[type="number"] {
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 3px 2px;
+  text-align: right;
+  font-size: 12px;
+  font-family: inherit;
+  background: transparent;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  /* hide number spinners */
+  -moz-appearance: textfield;
+}
+
+tbody td input[type="number"]::-webkit-inner-spin-button,
+tbody td input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+tbody td input[type="number"]:focus {
+  border-color: var(--blue);
+  background: var(--white);
+  box-shadow: 0 0 0 1px var(--blue);
+}
+
+tbody td input[type="number"]::placeholder {
+  color: var(--border-mid);
+}
+
+/* Delete button in row */
+.btn-del-row {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: color 0.1s, background 0.1s;
+}
+
+.btn-del-row:hover {
+  color: var(--warning);
+  background: #fde7e9;
+}
+
+/* ── Results summary ───────────────────────────────────────── */
+.results-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+.result-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.result-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chargeable Weight highlight */
+.chargeable-row {
+  background: var(--blue-light);
+  border: 1px solid var(--blue);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  margin-top: 8px;
+}
+
+.chargeable-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blue-dark);
+}
+
+.chargeable-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--blue);
+}
+
+/* Warning */
+.warning {
+  background: var(--warning-bg);
+  border-left: 3px solid var(--warning);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 5px 8px;
+  margin: 4px 0;
+  font-size: 11px;
+  color: var(--warning);
+  font-weight: 600;
+}
+
+/* Copy feedback */
+.copy-feedback {
+  text-align: center;
+  color: #107c10;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+  padding: 4px;
+  background: #dff6dd;
+  border-radius: var(--radius);
+}
