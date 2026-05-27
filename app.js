@@ -270,7 +270,7 @@ function updateResults() {
 
   if (!t.hasAllWeights && items.length > 0) {
     var missing = t.missingWeight;
-    elWarningText.textContent = '⚠ ' + missing + (missing === 1 ? ' Packstuck' : ' Packstucke') + ' ohne Gewicht';
+    elWarningText.textContent = '⚠ ' + missing + (missing === 1 ? ' Packstück' : ' Packstücke') + ' ohne Gewicht';
     elWeightWarning.classList.remove('hidden');
   } else {
     elWeightWarning.classList.add('hidden');
@@ -427,10 +427,10 @@ function buildClipboardText() {
   }
 
   lines.push(sep);
-  lines.push(padLeft('Packstucke gesamt:', 28)      + padLeft(t.totalPieces + ' Stk.', 12));
+  lines.push(padLeft('Packstücke gesamt:', 28)      + padLeft(t.totalPieces + ' Stk.', 12));
   lines.push(padLeft('Gesamtgewicht:', 28)           + padLeft(fmtEN(t.totalWeight, 2) + ' kg', 12));
-  lines.push(padLeft('Gesamtvolumen:', 28)           + padLeft(fmtEN(t.totalVolume_m3, 3) + ' m3', 12));
-  lines.push(padLeft('Volumengewicht (:6000):', 28)  + padLeft(fmtEN(t.volumeWeight_kg, 2) + ' kg', 12));
+  lines.push(padLeft('Gesamtvolumen:', 28)           + padLeft(fmtEN(t.totalVolume_m3, 3) + ' m³', 12));
+  lines.push(padLeft('Volumengewicht (÷6000):', 28)  + padLeft(fmtEN(t.volumeWeight_kg, 2) + ' kg', 12));
   lines.push(padLeft('CHARGEABLE WEIGHT:', 28)       + padLeft(fmtEN(t.chargeableWeight, 2) + ' kg', 12));
 
   return lines.join('\n');
