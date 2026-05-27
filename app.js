@@ -20,7 +20,7 @@ var items = []; // Array of { qty, l, b, h, weight }
 
 // ── DOM refs (populated after DOMContentLoaded) ────────────────
 var elPhaseInput, elPhaseResults, elEmailText;
-var elItemsTbody, elRespieces, elResWeight, elResVolume;
+var elItemsTbody, elResPieces, elResWeight, elResVolume;
 var elResVolWeight, elResChargeable, elWeightWarning, elWarningText;
 var elCopyFeedback;
 
@@ -30,7 +30,7 @@ function initApp() {
   elPhaseResults  = document.getElementById('phase-results');
   elEmailText     = document.getElementById('email-text');
   elItemsTbody    = document.getElementById('items-tbody');
-  elRespieces     = document.getElementById('res-pieces');
+  elResPieces     = document.getElementById('res-pieces');
   elResWeight     = document.getElementById('res-weight');
   elResVolume     = document.getElementById('res-volume');
   elResVolWeight  = document.getElementById('res-vol-weight');
@@ -76,7 +76,7 @@ function parseEmailText(text) {
   var reWeightOnlyLine = /^\s*(?:gw|gew\.?|brutto(?:gewicht)?|total\s+brutto)[\s:]*(\d+(?:\.\d+)?)\s*kg\b/i;
 
   // Summary line keywords - if present AND no dim pattern -> skip
-  var reSummaryKeywords = /\b(?:total|gesamt|pieces|pcs|cbm|cbm|cll|brutto)\b/i;
+  var reSummaryKeywords = /\b(?:total|gesamt|pieces|pcs|cbm|cll|brutto)\b/i;
 
   for (var i = 0; i < lines.length; i++) {
     var raw = lines[i];
@@ -102,32 +102,33 @@ function parseEmailText(text) {
       continue;
     }
 
-    // ── Try to find dimension block ───────────────────────────
-    var dimMatch = line.match(reDim);
+    // ── Step 1: try to strip explicit qty prefix like "2x " or "2 X " ─
+    var qty = 1;
+    var dimLine = line;
+    var mQtyPrefix = line.match(/^(\d+)\s*[xX]\s+/); // requires whitespace after the x
+    if (mQtyPrefix) {
+      qty = parseInt(mQtyPrefix[1], 10);
+      dimLine = line.substring(mQtyPrefix[0].length);
+    }
+
+    // ── Step 2: tight format NxAxBxC (no space) only if no prefix found ─
+    var mTight = null;
+    if (!mQtyPrefix) {
+      mTight = line.match(/^(\d+)[xX](\d+(?:\.\d+)?)[xX](\d+(?:\.\d+)?)[xX](\d+(?:\.\d+)?)/i);
+      if (mTight) {
+        qty = parseInt(mTight[1], 10);
+      }
+    }
+
+    // ── Step 3: find dimensions in dimLine (or use tight groups) ─────────
+    var dimMatch = mTight
+      ? [null, mTight[2], mTight[3], mTight[4]]
+      : dimLine.match(reDim);
     if (!dimMatch) continue; // No dimensions -> skip
 
     var l = parseFloat(dimMatch[1]);
     var b = parseFloat(dimMatch[2]);
     var h = parseFloat(dimMatch[3]);
-
-    // ── Quantity prefix ───────────────────────────────────────
-    var qty = 1;
-    // Grab the text before the dimension match
-    var dimIndex = line.indexOf(dimMatch[0]);
-    var prefix = line.substring(0, dimIndex);
-
-    // Try "Nx " (space after x) anywhere in prefix
-    var mQty = prefix.match(/(\d+)\s*[xX]\s*$/);
-    if (mQty) {
-      qty = parseInt(mQty[1], 10);
-    } else {
-      // Try tight "NxDDD" at start of line (e.g. "1x120x82x70cm")
-      // In this case the dim match starts right after "Nx"
-      var mTight = line.match(/^(\d+)[xX](\d)/);
-      if (mTight && dimIndex === (mTight[1].length + 1)) {
-        qty = parseInt(mTight[1], 10);
-      }
-    }
 
     // ── Weight on same line ───────────────────────────────────
     var weight = null;
@@ -136,8 +137,10 @@ function parseEmailText(text) {
       weight = parseFloat(mWSlash[1]);
     } else {
       // bare kg - but make sure it's not one of the dimension numbers
-      // by checking it appears outside the dimension block
-      var afterDim = line.substring(dimIndex + dimMatch[0].length);
+      // by checking it appears after the dimension block in the original line
+      var dimStr = mTight ? mTight[0] : (mQtyPrefix ? mQtyPrefix[0] : '') + dimMatch[0];
+      var dimIndex = line.indexOf(dimStr);
+      var afterDim = line.substring(dimIndex + dimStr.length);
       var mWBare = afterDim.match(reWeightBare);
       if (mWBare) {
         weight = parseFloat(mWBare[1]);
@@ -240,7 +243,7 @@ function renderTable() {
       var tdDel = document.createElement('td');
       var btnDel = document.createElement('button');
       btnDel.className = 'btn-del-row';
-      btnDel.title = 'Zeile loschen';
+      btnDel.title = 'Zeile löschen';
       btnDel.textContent = '×'; // x character
       btnDel.addEventListener('click', function () {
         items.splice(idx, 1);
@@ -260,7 +263,7 @@ function renderTable() {
 function updateResults() {
   var t = calcTotals(items);
 
-  elRespieces.textContent = t.totalPieces + ' Stk.';
+  elResPieces.textContent = t.totalPieces + ' Stk.';
 
   if (t.hasAnyWeight) {
     elResWeight.textContent = fmtDE(t.totalWeight, 2) + ' kg';
@@ -280,7 +283,8 @@ function updateResults() {
   elResVolWeight.textContent = fmtDE(t.volumeWeight_kg, 2) + ' kg';
 
   if (t.hasAnyWeight || t.volumeWeight_kg > 0) {
-    elResChargeable.textContent = fmtDE(t.chargeableWeight, 2) + ' kg';
+    var prefix = (!t.hasAllWeights && t.hasAnyWeight) ? '≥ ' : '';
+    elResChargeable.textContent = prefix + fmtDE(t.chargeableWeight, 2) + ' kg';
   } else {
     elResChargeable.textContent = '-';
   }
@@ -315,7 +319,7 @@ function onParse() {
 
   if (items.length === 0) {
     elEmailText.style.borderColor = '#d83b01';
-    elEmailText.placeholder = 'Keine Dimensionen gefunden. Bitte Text prufen.';
+    elEmailText.placeholder = 'Keine Dimensionen gefunden. Bitte Text prüfen.';
     return;
   }
 
@@ -349,6 +353,7 @@ function onRestart() {
   items = [];
   elEmailText.value = '';
   elEmailText.style.borderColor = '';
+  elEmailText.placeholder = 'Dimensionen im Format: 1x 120*80*100 oder 120 x 80 x 100 / 50 kg';
   showPhase('input');
   elEmailText.focus();
 }
