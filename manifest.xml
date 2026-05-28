@@ -35,13 +35,13 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://PLACEHOLDER.github.io/luftfracht-rechner/index.html" />
+        <SourceLocation DefaultValue="https://andreas-schmidt-ux.github.io/luftfracht-rechner/index.html" />
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
     <Form xsi:type="ItemEdit">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://PLACEHOLDER.github.io/luftfracht-rechner/index.html" />
+        <SourceLocation DefaultValue="https://andreas-schmidt-ux.github.io/luftfracht-rechner/index.html" />
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -139,8 +139,8 @@
         <bt:Image id="Icon.80x80" DefaultValue="https://officeimg.vo.msecnd.net/images/APP_Logo_512.png" />
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="FunctionFile.Url" DefaultValue="https://PLACEHOLDER.github.io/luftfracht-rechner/index.html" />
-        <bt:Url id="Taskpane.Url" DefaultValue="https://PLACEHOLDER.github.io/luftfracht-rechner/index.html" />
+        <bt:Url id="FunctionFile.Url" DefaultValue="https://andreas-schmidt-ux.github.io/luftfracht-rechner/index.html" />
+        <bt:Url id="Taskpane.Url" DefaultValue="https://andreas-schmidt-ux.github.io/luftfracht-rechner/index.html" />
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Luftfracht" />
