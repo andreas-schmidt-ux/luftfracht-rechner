@@ -1,5 +1,6 @@
 /* ============================================================
-   Luftfracht Rechner – Office Fluent-inspired styles
+   Luftfracht Rechner – SP-Aircargosolutions Brand Design
+   Brand: #6A8C23 (olive green) · #1E2530 (charcoal navy) · #FFFFFF
    ============================================================ */
 
 *, *::before, *::after {
@@ -9,25 +10,40 @@
 }
 
 :root {
-  --blue:        #0078d4;
-  --blue-light:  #deecf9;
-  --blue-dark:   #005a9e;
-  --bg:          #f3f2f1;
-  --white:       #ffffff;
-  --text:        #323130;
-  --text-muted:  #605e5c;
-  --border:      #edebe9;
-  --border-mid:  #c8c6c4;
-  --warning:     #d83b01;
-  --warning-bg:  #fff4ce;
-  --row-alt:     #faf9f8;
-  --radius:      4px;
-  --shadow:      0 1px 3px rgba(0,0,0,0.12);
+  /* SP-Aircargosolutions brand tokens */
+  --accent:        #6A8C23;
+  --accent-light:  #EBF2D6;
+  --accent-dark:   #4E6A18;
+  --primary:       #1E2530;
+  --primary-mid:   #2D3748;
+
+  /* Surfaces */
+  --bg:            #F5F6F8;
+  --white:         #FFFFFF;
+
+  /* Typography */
+  --text:          #1A1A2A;
+  --text-muted:    #8A919E;
+
+  /* Borders */
+  --border:        #E2E5EA;
+  --border-mid:    #C5CAD4;
+
+  /* Feedback */
+  --warning:       #D97706;
+  --warning-bg:    #FFFBEB;
+  --success:       #3A7C1A;
+  --success-bg:    #ECFADF;
+
+  /* Misc */
+  --row-alt:       #F9FAFB;
+  --radius:        6px;
+  --shadow:        0 1px 4px rgba(30,37,48,0.10);
 }
 
 html, body {
   height: 100%;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
   font-size: 13px;
   color: var(--text);
   background: var(--bg);
@@ -39,27 +55,48 @@ html, body {
   padding: 8px;
 }
 
-/* ── Header ────────────────────────────────────────────────── */
+/* ── Header ─────────────────────────────────────────────────── */
 .app-header {
+  background: var(--primary);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 4px 8px;
+  gap: 10px;
 }
 
-.app-icon {
-  font-size: 20px;
-  line-height: 1;
+.app-logo {
+  height: 28px;
+  width: auto;
+  flex-shrink: 0;
+  /* Invert the dark elements to white for the dark header */
+  filter: brightness(0) invert(1);
+}
+
+.app-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .app-header h1 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--blue);
-  letter-spacing: -0.2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.1px;
+  line-height: 1.2;
 }
 
-/* ── Cards ─────────────────────────────────────────────────── */
+.app-header-sub {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
 .card {
   background: var(--white);
   border: 1px solid var(--border);
@@ -69,30 +106,22 @@ html, body {
   margin-bottom: 8px;
 }
 
-.table-card {
-  padding: 10px 10px 8px;
-}
+.table-card  { padding: 10px 10px 8px; }
+.results-card { padding: 12px; }
+.action-card  { padding: 10px 12px; }
 
-.results-card {
-  padding: 12px;
-}
-
-.action-card {
-  padding: 10px 12px;
-}
-
-/* ── Phase visibility ──────────────────────────────────────── */
+/* ── Phase visibility ───────────────────────────────────────── */
 .phase { }
 .hidden { display: none !important; }
 
-/* ── Input phase ───────────────────────────────────────────── */
+/* ── Input phase ────────────────────────────────────────────── */
 .field-label {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   margin-bottom: 6px;
 }
 
@@ -107,13 +136,13 @@ textarea {
   color: var(--text);
   line-height: 1.5;
   background: var(--white);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
   outline: none;
 }
 
 textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 1px var(--blue);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-light);
 }
 
 .hint {
@@ -124,7 +153,7 @@ textarea:focus {
   line-height: 1.4;
 }
 
-/* ── Buttons ───────────────────────────────────────────────── */
+/* ── Buttons ────────────────────────────────────────────────── */
 .button-row {
   display: flex;
   gap: 8px;
@@ -143,55 +172,49 @@ textarea:focus {
   font-family: inherit;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.1s, color 0.1s, border-color 0.1s;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
   white-space: nowrap;
 }
 
+/* Primary: brand green */
 .btn-primary {
-  background: var(--blue);
+  background: var(--accent);
   color: var(--white);
-  border: 1px solid var(--blue);
+  border: 1px solid var(--accent);
 }
 
-.btn-primary:hover {
-  background: var(--blue-dark);
-  border-color: var(--blue-dark);
-}
+.btn-primary:hover  { background: var(--accent-dark); border-color: var(--accent-dark); }
+.btn-primary:active { background: #3D5212; }
 
-.btn-primary:active {
-  background: #004578;
-}
-
+/* Secondary: outlined green */
 .btn-secondary {
   background: var(--white);
-  color: var(--blue);
-  border: 1px solid var(--blue);
+  color: var(--accent-dark);
+  border: 1px solid var(--accent);
 }
 
-.btn-secondary:hover {
-  background: var(--blue-light);
-}
+.btn-secondary:hover  { background: var(--accent-light); }
+.btn-secondary:active { background: #D4E8A8; }
 
-.btn-secondary:active {
-  background: #c7e0f4;
-}
-
+/* Add row: dashed */
 .btn-add {
   background: transparent;
-  color: var(--blue);
+  color: var(--accent-dark);
   border: 1px dashed var(--border-mid);
   width: 100%;
   margin-top: 8px;
   font-size: 12px;
+  font-weight: 600;
   padding: 6px;
 }
 
 .btn-add:hover {
-  background: var(--blue-light);
-  border-color: var(--blue);
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--accent-dark);
 }
 
-/* ── Table ─────────────────────────────────────────────────── */
+/* ── Table ──────────────────────────────────────────────────── */
 .table-wrapper {
   overflow-x: auto;
   border: 1px solid var(--border);
@@ -205,32 +228,25 @@ table {
 }
 
 thead {
-  background: var(--blue);
+  background: var(--primary);
   color: var(--white);
 }
 
 thead th {
-  padding: 6px 4px;
+  padding: 7px 4px;
   text-align: center;
   font-weight: 600;
   font-size: 11px;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.3px;
   white-space: nowrap;
 }
 
 thead th:first-child { padding-left: 8px; }
 
-tbody tr:nth-child(odd) {
-  background: var(--white);
-}
+tbody tr:nth-child(odd)  { background: var(--white); }
+tbody tr:nth-child(even) { background: var(--row-alt); }
 
-tbody tr:nth-child(even) {
-  background: var(--row-alt);
-}
-
-tbody tr:hover {
-  background: var(--blue-light);
-}
+tbody tr:hover { background: var(--accent-light); }
 
 tbody td {
   padding: 3px 2px;
@@ -257,7 +273,7 @@ tbody td:first-child {
 tbody td input[type="number"] {
   width: 100%;
   border: 1px solid transparent;
-  border-radius: 2px;
+  border-radius: 3px;
   padding: 3px 2px;
   text-align: right;
   font-size: 12px;
@@ -266,7 +282,6 @@ tbody td input[type="number"] {
   color: var(--text);
   outline: none;
   transition: border-color 0.15s, background 0.15s;
-  /* hide number spinners */
   -moz-appearance: textfield;
 }
 
@@ -277,16 +292,16 @@ tbody td input[type="number"]::-webkit-outer-spin-button {
 }
 
 tbody td input[type="number"]:focus {
-  border-color: var(--blue);
+  border-color: var(--accent);
   background: var(--white);
-  box-shadow: 0 0 0 1px var(--blue);
+  box-shadow: 0 0 0 1px var(--accent-light);
 }
 
 tbody td input[type="number"]::placeholder {
   color: var(--border-mid);
 }
 
-/* Delete button in row */
+/* Delete button */
 .btn-del-row {
   background: transparent;
   border: none;
@@ -295,38 +310,36 @@ tbody td input[type="number"]::placeholder {
   font-size: 14px;
   line-height: 1;
   padding: 2px 4px;
-  border-radius: 2px;
+  border-radius: 3px;
   transition: color 0.1s, background 0.1s;
 }
 
 .btn-del-row:hover {
-  color: var(--warning);
-  background: #fde7e9;
+  color: #B91C1C;
+  background: #FEE2E2;
 }
 
-/* ── Results summary ───────────────────────────────────────── */
+/* ── Results summary ────────────────────────────────────────── */
 .results-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   color: var(--text-muted);
   margin-bottom: 10px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 2px solid var(--accent-light);
 }
 
 .result-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 4px 0;
+  padding: 5px 0;
   border-bottom: 1px solid var(--border);
 }
 
-.result-row:last-child {
-  border-bottom: none;
-}
+.result-row:last-child { border-bottom: none; }
 
 .result-label {
   font-size: 12px;
@@ -340,10 +353,10 @@ tbody td input[type="number"]::placeholder {
   font-variant-numeric: tabular-nums;
 }
 
-/* Chargeable Weight highlight */
+/* Chargeable Weight — brand green highlight */
 .chargeable-row {
-  background: var(--blue-light);
-  border: 1px solid var(--blue);
+  background: var(--accent-light);
+  border: 1.5px solid var(--accent);
   border-radius: var(--radius);
   padding: 8px 10px;
   margin-top: 8px;
@@ -352,13 +365,14 @@ tbody td input[type="number"]::placeholder {
 .chargeable-label {
   font-size: 13px;
   font-weight: 700;
-  color: var(--blue-dark);
+  color: var(--accent-dark);
 }
 
 .chargeable-value {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  color: var(--blue);
+  color: var(--accent-dark);
+  letter-spacing: -0.3px;
 }
 
 /* Warning */
@@ -376,11 +390,11 @@ tbody td input[type="number"]::placeholder {
 /* Copy feedback */
 .copy-feedback {
   text-align: center;
-  color: #107c10;
+  color: var(--success);
   font-size: 12px;
   font-weight: 600;
   margin-top: 6px;
   padding: 4px;
-  background: #dff6dd;
+  background: var(--success-bg);
   border-radius: var(--radius);
 }
